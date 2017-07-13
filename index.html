@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="styles/minireset.min.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/font-awesome.min.css">
+    <script src="scripts/jquery-3.2.1.min.js"></script>
+    <script src="scripts/jquery-ui.min.js"></script>
+    <script src="scripts/moment.min.js"></script>
+    <script src="scripts/vue.csp.js"></script>
+    <script src="scripts/jquery.cookie.js"></script>
+    <title>New Start</title>
+</head>
+
+<body>
+    <div id="fb-root"></div>
+    <script src="scripts/facebook.js"></script>
+    <div id="menutoggle"><i class="fa fa-bars fa-3x"></i></div>
+    <div id="menu">
+        <div id="options">
+            <div id="addnew">
+                <div class="optionsheader">
+                    <h3>Add Bookmark</h3>
+                    <div id="caret"><i class="fa fa-caret-down"></i></div>
+                </div>
+                <div class="optionssection">
+                    <form id="addbkmk">
+                        <div class="toprow">
+                            <img id="bkmkimg" src="/assets/icons/holder.png" alt="">
+                            <input id="name" type="text" placeholder="Youtube" required oninvalid="setCustomValidity('Please Enter a Name')" onchange="try{setCustomValidity('')}catch(e){}" autocomplete="off">
+                        </div>
+                        <div id="iconchoose">
+                            <div class="choice"></div>
+                            <div class="choice"></div>
+                            <div class="choice"></div>
+                            <div class="choice"></div>
+                            <br>
+                            <div class="choice"></div>
+                            <div class="choice"></div>
+                            <div class="choice"></div>
+                            <div class="choice"></div>
+                            <br>
+                            <div class="choice"></div>
+                            <div class="choice"></div>
+                            <div class="choice"></div>
+                            <div class="choice customicon"><label for="addCustom" class="iconlabel"></label><input id="addCustom" type="file" value="" accept="image/png, image/jpeg" autocomplete="off"></input>
+                            </div>
+                        </div>
+                        <input id="address" type="text" placeholder="www.youtube.com" required oninvalid="setCustomValidity('Please Enter an Address in the format: www.site.com')" onchange="try{setCustomValidity('')}catch(e){}" autocomplete="off">
+                        <input type="submit" value="ADD">
+                    </form>
+                </div>
+            </div>
+            <div id="changesearch">
+                <div class="optionsheader">
+                    <h3>Search Engine</h3>
+                    <div id="caret"><i class="fa fa-caret-down"></i></div>
+                </div>
+                <div class="optionssection">
+                    <div id="changesearch">
+                        <div class="toprow">
+                            <select id="searchlist" name="engines">
+                                <option value="Google">Google</option>
+                                <option value="Yahoo">Yahoo</option>
+                                <option value="Bing">Bing</option>
+                                <option value="DuckDuckGo">DuckDuckGo</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="changebg">
+                <div class="optionsheader">
+                    <h3>Background</h3>
+                    <div id="caret"><i class="fa fa-caret-down"></i></div>
+                </div>
+                <div class="optionssection">
+                    <div id="changebg">
+                        <div class="toprow">
+                            <select id="bglist" name="backgrounds">
+                                <option value="Unsplash">Unsplash</option>
+                                <option value="Google Earth View">Google Earth View</option>
+                                <option value="Reddit Earth Porn">Reddit Earth Porn</option>
+                                <option value="Custom">Custom</option>
+                            </select>
+                            <div class="subrow">
+                                <label for="custombg" class="custombg">CUSTOM</label>
+                                <input id="custombg" style="display:none" type="file" name="files[]" value="CUSTOM" accept="image/png, image/jpeg" multiple autocomplete="off">
+                                <p><span>*</span>You can select up to 10 images</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="about">
+                <div class="optionsheader">
+                    <h3>About</h3>
+                    <div id="caret"><i class="fa fa-caret-down"></i></div>
+                </div>
+                <div class="optionssection">
+                    <p><span>New Start</span> is a Chrome extension designed to really let you customize your new tab experience by giving you control over what you see, and how you search, all within a clean UI. It's built with with the help of <a href="https://jquery.com/">jQuery</a>, <a href="https://momentjs.com/">Moment.js</a>, <a href="https://vuejs.org/">Vue.js</a>, and <a href="http://fontawesome.io/">Fontawesome</a>.</p>
+                    <p>The images in this plugin are taken from <a href="https://unsplash.com/">Unsplash</a>, <a href="http://www.reddit.com/r/earthporn">Reddit</a>, and <a href="https://earthview.withgoogle.com/">Google Earth View</a>, as well as some offline images provided by the developer himself.</p>
+                    <p>Developed by: <a href="http://chriswilcz.com">Chris Wilczewski</a></p>
+                </div>
+            </div>
+        </div>
+        <div id="footer">
+            <div id="share">
+                <h2>Spread the word!</h2>
+                <div id="socialcontainer">
+                    <div class="socialicon" id="twit">
+<!--
+                        <a id="socialshare" class="twitter-share-button" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fgoo.gl%2FYvM5iF&text=Check%20out%20NewStart%2C%20a%20new%20tab%20Chrome%20Extension%21&hashtags=newstartapp">
+                        </a>
+-->
+                    </div>
+                    <div id="face" class="socialicon fb-share-button" data-href="insert stuff here" data-layout="button" data-size="large" data-mobile-iframe="false">
+<!--                        <a id="socialshare" class="fb-xfbml-parse-ignore" target="_blank" href="insert stuff here"></a>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="main-wrapper">
+        <div id="editwrapper">
+            <div id="editcontainer">
+                <div id="editclose">
+                </div>
+                <form id="editbkmk">
+                    <div class="toprow">
+                        <img id="bkmkimgedit" src="/assets/icons/holder.png" alt="">
+                        <input id="nameedit" type="text" placeholder="Youtube" required oninvalid="setCustomValidity('Please Enter a Name')" onchange="try{setCustomValidity('')}catch(e){}" autocomplete="off">
+                    </div>
+                    <div id="iconchooseedit">
+                        <div class="choiceedit"></div>
+                        <div class="choiceedit"></div>
+                        <div class="choiceedit"></div>
+                        <div class="choiceedit"></div>
+                        <br>
+                        <div class="choiceedit"></div>
+                        <div class="choiceedit"></div>
+                        <div class="choiceedit"></div>
+                        <div class="choiceedit"></div>
+                        <br>
+                        <div class="choiceedit"></div>
+                        <div class="choiceedit"></div>
+                        <div class="choiceedit"></div>
+                        <div class="choiceedit customicon"><label for="editCustom" class="iconlabel"></label><input id="editCustom" type="file" value="" accept="image/png, image/jpeg" autocomplete="off"></input>
+                        </div>
+                    </div>
+                    <input id="addressedit" type="text" placeholder="www.youtube.com" required oninvalid="setCustomValidity('Please Enter an Address in the format: www.site.com')" onchange="try{setCustomValidity('')}catch(e){}" autocomplete="off">
+                    <input type="submit" value="UPDATE">
+                </form>
+            </div>
+        </div>
+        <div id="maincontainer">
+            <div id="content">
+                <div id="timedate">
+                    <h1 id="time"></h1>
+                    <h2 id="date"></h2>
+                </div>
+                <form id="search">
+                    <input class="searchBox" type="text" autofocus>
+                    <input class="searchbtn" type="submit" value="GO">
+                </form>
+                <div id="bookmarks">
+                </div>
+            </div>
+            <div id="imginfo"><i class="fa fa-chevron-up fa-2x"></i></div>
+            <a id="infocontainer" target="_blank">
+            </a>
+            <div id="overlay"></div>
+            <div id="image" style="display:none"></div>
+        </div>
+    </div>
+    <script src="scripts/script.js"></script>
+</body>
+
+</html>

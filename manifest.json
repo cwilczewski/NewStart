@@ -1,0 +1,10 @@
+{
+    "name": "New Start",
+    "description": "New Start is a Chrome extension designed to really let you customize your new tab experience by giving you control over what you see, and how you search, all within a clean UI.",
+    "version": "0.1",
+    "manifest_version": 2,
+    "permissions": ["storage"],
+    "chrome_url_overrides": {
+        "newtab": "index.html"
+    }
+}
