@@ -69,6 +69,64 @@ body,
     overflow: hidden;
 }
 
+#alert {
+    display: none;
+    z-index: 999999;
+    color: #fafafa;
+    position: absolute;
+    width: 600px;
+    height: auto;
+    border: 2px solid #fafafa;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(21, 21, 21, .8);
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    padding: 50px 40px;
+}
+
+#welcome {
+   display: none;
+    z-index: 999999;
+    color: #fafafa;
+    position: absolute;
+    width: 600px;
+    height: auto;
+    border: 2px solid #fafafa;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(21, 21, 21, .8);
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    padding: 50px 40px; 
+}
+
+#welcome span {
+    font-family: 'Assistant-Bold';
+}
+
+#welcome img {
+    width: 20px;
+}
+
+#alert h2, #welcome h2{
+    text-align: center;
+    font-family: 'Assistant-Bold';
+    font-size: 3em;
+    letter-spacing: 3px
+}
+
+#alert p, #welcome p {
+    margin-top: 20px;
+    font-family: 'Assistant-Light';
+    letter-spacing: 2px;
+    line-height: 30px;
+}
+
 a {
     text-decoration: none;
 }
@@ -104,7 +162,7 @@ a {
 
 .wrapper-open {
     z-index: -1!important;
-    width: calc(100vw - 600px)!important;
+    width: calc(100vw - 400px)!important;
 }
 
 .menuout {
@@ -222,6 +280,23 @@ a {
     margin: 25px;
 }
 
+#gitlinks {
+    margin-bottom: 10px;
+}
+
+#gitlinks a {
+    color: #fafafa; 
+    font-size:.71em;
+}
+
+#gitlinks a:hover {
+    color: #00BFA5;
+}
+
+#gitlinks span {
+    color: #00BFA5;
+}
+
 .subrow {
     width: 100%;
     display: flex;
@@ -234,7 +309,6 @@ a {
 .subrow p {
     font-family: Assistant-ExtraL;
     color: #fafafa;
-    margin-top: 30px;
 }
 
 .subrow span {
@@ -338,7 +412,7 @@ option {
     display: none;
 }
 
-#editcontainer {
+#editcontainer{
     position: absolute;
     width: 600px;
     height: auto;
@@ -369,7 +443,9 @@ option {
     width: calc(100% - 150px);
 }
 
-#editclose {
+#editclose,
+#alertclose,
+#welcomeclose {
     position: absolute;
     width: 60px;
     height: 60px;
@@ -379,9 +455,12 @@ option {
     background-size: cover;
     background-position: center;
     transition: ease-in-out all .3s;
+    cursor: pointer;
 }
 
-#editclose:hover {
+#editclose:hover,
+#alertclose:hover,
+#welcomeclose:hover {
     background-image: url(../assets/closew.png);
 }
 
@@ -484,9 +563,10 @@ input[type=submit]:hover,.custombg:hover {
 }
 
 .custombg{
-    width: 250px;
+    width: 200px;
     text-align: center;
     margin-left: 0;
+    margin-right: 40px;
 }
 
 .searchBox {
@@ -586,7 +666,7 @@ input[type=submit]:hover,.custombg:hover {
 .editbtn,
 .delbtn {
     padding: 10px 0;
-    min-width: 91px;
+    min-width: 89px;
     width: 4.5vw;
     text-align: center;
     transition: ease-in-out all .2s;

@@ -27,6 +27,16 @@ $(document).ready(function () {
 
     var timer = null;
     var linkDisable = null;
+    
+    chrome.storage.local.get('firstRun', function (firstRun) {
+        if(firstRun === null){
+            $('#welcome').fadeIn().css('display', 'flex');
+        }
+        else{               
+        }
+    });
+    
+    
     chrome.storage.local.get('data', function (dataRaw) {
         data = dataRaw.data[0];
         setBG = data.background.backgroundSource;
@@ -109,6 +119,29 @@ function loadEdit() {
             $('.delbtn').click(function () {
                 $(this).parent().parent().parent('.bookmark').fadeOut('fast');
                 $(this).parent().parent().parent('.bookmark').remove();
+                bkinfo = [];
+                $('.bookmark').each(function () {
+                    var imglink = $(this).children('.bkimg').css('background-image');
+                    var httpPrefix = 'http://';
+                    var httpsPrefix = 'https://';
+                    imglink = imglink.replace('url(', '').replace(')', '').replace(/\"/gi, "");
+                    bkinfo.push({
+                        name: $(this).children('.name').text(),
+                        address: $(this).children('.address').text(),
+                        img: imglink
+                    });
+                });
+                getBackground();
+                getEngine();
+                usrSettings.push({
+                    engine: searchinfo,
+                    bookmarks: bkinfo,
+                    background: bgInfo
+                });
+                chrome.storage.local.set({
+                    data: usrSettings
+                }, function () {});
+                bkmrkrender.rerender();
             });
         };
 
@@ -224,6 +257,17 @@ function loadEdit() {
     }, 500);
 };
 
+$('#alertclose').click(function () {
+    $('#alert').fadeOut('fast');
+});
+
+$('#welcomeclose').click(function () {
+    $('#welcome').fadeOut('fast');
+    chrome.storage.local.set({
+        firstRun: 'false'
+    }, function () {});
+})
+
 //create date for cookie
 var date = new Date();
 date.setTime(date.getTime() + (60 * 60 * 24 * 1000));
@@ -233,8 +277,8 @@ function unsplash() {
 
     var unsplashAPI = 'https://api.unsplash.com/photos/search/?query=nature&client_id=c7f3538249fa7a2878ba0b088bb6b2621265f5beb998daca109210d972d4a45c';
 
-    if ($.cookie('unsplashCookie') === null) {
-        $.cookie("unsplashCookie", 1, {
+    if (typeof $.cookie('unsplashCookie') === 'undefined') {
+        $.cookie("unsplashCookie", 1,  {
             expires: date
         });
         $.getJSON(unsplashAPI, {})
@@ -289,8 +333,8 @@ function reddit() {
 
     var redditAPI = 'https://www.reddit.com/r/earthporn/top.json?limit=10';
 
-    if ($.cookie('redditCookie') === null) {
-        $.cookie("redditCookie", 1, {
+    if (typeof $.cookie('redditCookie') === 'undefined') {
+        $.cookie("redditCookie", 1,  {
             expires: date
         });
         $.getJSON(redditAPI, {})
@@ -323,7 +367,7 @@ function reddit() {
                 $('#infocontainer').fadeIn();
             })
     } else {
-        chrome.storage.local.get('reddit', function (data) {
+        chrome.storage.local.get('reddit', function (data) {   
             imgarray = (data.reddit);
             //grab random image
             var image = imgarray[Math.floor(Math.random() * imgarray.length)];
@@ -347,22 +391,22 @@ function gearth() {
 
     var gearthAPI = localURL + ('scripts/earthview.json');
 
-        $.getJSON(gearthAPI, {})
-            .done(function (data) {
-                imgarray = [];
-                $('#infocontainer').empty();
-                $.each(data, function (i, item) {
-                    imgarray.push(data[i])
-                });
-                //grab random image
-                var image = imgarray[Math.floor(Math.random() * imgarray.length)];
-                //push data to page
-                $('#image').css('background-image', 'url(' + image.image + ')');
-                $('#infocontainer').attr('href', image.map);
-                $('#infocontainer').append('<h3>' + image.region + ', ' + image.country + '</h3>');
-                $('#imginfo').fadeIn();
-                $('#infocontainer').fadeIn();
+    $.getJSON(gearthAPI, {})
+        .done(function (data) {
+            imgarray = [];
+            $('#infocontainer').empty();
+            $.each(data, function (i, item) {
+                imgarray.push(data[i])
             });
+            //grab random image
+            var image = imgarray[Math.floor(Math.random() * imgarray.length)];
+            //push data to page
+            $('#image').css('background-image', 'url(' + image.image + ')');
+            $('#infocontainer').attr('href', image.map);
+            $('#infocontainer').append('<h3>' + image.region + ', ' + image.country + '</h3>');
+            $('#imginfo').fadeIn();
+            $('#infocontainer').fadeIn();
+        });
 };
 
 //custom background
@@ -466,7 +510,9 @@ $('.choiceedit').each(function (i) {
 $('#addbkmk').on('submit', function (e) {
     e.preventDefault();
     if ($('.bookmark').length > 9) {
-        alert('Sorry, for now you can only ad 10 bookmarks!')
+        //        alert('Sorry, for now you can only ad 10 bookmarks!')
+        alertrender.scLimit();
+        $('#alert').fadeIn('fast').css('display', 'flex');
     } else {
         var httpPrefix = 'http://';
         var httpsPrefix = 'https://';
@@ -648,7 +694,8 @@ function readMultiple(files) {
 
 $('#custombg').change(function () {
     if ($(this)[0].files.length > 9) {
-        alert('Please choose a maximum of 10 images!');
+        alertrender.bgLimit();
+        $('#alert').fadeIn('fast');
         $(this).val('');
     } else {
         readMultiple(this.files);
@@ -669,6 +716,18 @@ $('#bglist').change(function () {
     bgrender.updateBG();
 });
 
+var alertrender = new Vue({
+    el: '#alertmessage',
+    methods: {
+        scLimit: function (event) {
+            $('#alertmessage').text('It looks like you are trying to add more than 10 shortcuts, which is currently the maximum limit!');
+        },
+        bgLimit: function (event) {
+            $('#alertmessage').text('The maximum amount of custom photos is 10, please select again.');
+        }
+    }
+});
+
 var bkmrkrender = new Vue({
     el: '#bookmarks',
     methods: {
@@ -679,12 +738,13 @@ var bkmrkrender = new Vue({
             });
             $('#bookmarks').append('<a href="' + bkinfo[bkinfo.length - 1].address + '" class="bookmark ' + bkinfo[bkinfo.length - 1].name + '"><div class="editbk"><img src="assets/edit.png"><div class="editmenu"><div class="editbtn">EDIT</div><div class="delbtn">DELETE</div></div></div> <div class="bkimg" style="background-image: url(' + bkinfo[bkinfo.length - 1].img + ')"></div> <p class="name">' + bkinfo[bkinfo.length - 1].name + '</p><div class="address">' + bkinfo[bkinfo.length - 1].address + '</div></div>');
             $('.bookmark').fadeIn('fast');
+            loadEdit();
         },
         rerender: function (event) {
             $('#bookmarks').empty();
             $(bkinfo).each(function (i) {
                 $('#bookmarks').append('<a href="' + bkinfo[i].address + '" class="bookmark ' + bkinfo[i].name + '"><div class="editbk"><img src="assets/edit.png"><div class="editmenu"><div class="editbtn">EDIT</div><div class="delbtn">DELETE</div></div></div> <div class="bkimg" style="background-image: url(' + bkinfo[i].img + ')"></div> <p class="name">' + bkinfo[i].name + '</p><div class="address">' + bkinfo[i].address + '</div></div>');
-                $('.bookmark').fadeIn();
+                $('.bookmark').show();
             });
             loadEdit();
         }
