@@ -22,6 +22,9 @@ var localURL = window.location.href.slice(0, -10);
 var data;
 var bgData;
 
+
+
+
 //load user settings
 $(document).ready(function () {
 
@@ -29,65 +32,102 @@ $(document).ready(function () {
     var linkDisable = null;
     
     chrome.storage.local.get('firstRun', function (firstRun) {
-        if(firstRun === null){
+        if (firstRun.firstRun === undefined) {
             $('#welcome').fadeIn().css('display', 'flex');
-        }
-        else{               
+
+            searchinfo = ({
+                name: "Google",
+                address: google
+            });
+
+            bgInfo = ({
+                backgroundSource: "Unsplash"
+            })
+
+            usrSettings.push({
+                engine: searchinfo,
+                bookmarks: null,
+                background: bgInfo
+            });
+            chrome.storage.local.set({
+                data: usrSettings
+            }, function () {});
+        } 
+        else {
         }
     });
-    
-    
+
     chrome.storage.local.get('data', function (dataRaw) {
-        data = dataRaw.data[0];
-        setBG = data.background.backgroundSource;
+        
+        data = dataRaw.data;
 
-        $('#bglist').val(setBG);
+        if (dataRaw.data === undefined) {
 
-        if (setBG == 'Unsplash') {
-            if (navigator.onLine) {
-                unsplash();
-            } else {
-                offline();
+            unsplash();
+            $('#image').fadeIn('slow');
+            $('#content').animate({
+                opacity: 1
+            }, 'fast');
+            $('.searchBox').focus();
+
+            setEngineAdd = google;
+            setEngPlace = "Google";
+            $('#searchlist').val(setEngPlace);
+            $('.searchBox').attr('placeholder', 'Search ' + setEngPlace);
+
+        } else {
+            
+            setBG = data[0].background.backgroundSource;
+
+            $('#bglist').val(setBG);
+
+            if (setBG == 'Unsplash') {
+                if (navigator.onLine) {
+                    unsplash();
+                } else {
+                    offline();
+                }
+
+            }
+            if (setBG == 'Google Earth View') {
+                if (navigator.onLine) {
+                    gearth();
+                } else {
+                    offline();
+                }
+            }
+            if (setBG == 'Reddit Earth Porn') {
+                if (navigator.onLine) {
+                    reddit();
+                } else {
+                    offline();
+                }
+            }
+            if (setBG == 'Custom') {
+                customBG();
             }
 
-        }
-        if (setBG == 'Google Earth View') {
-            if (navigator.onLine) {
-                gearth();
-            } else {
-                offline();
-            }
-        }
-        if (setBG == 'Reddit Earth Porn') {
-            if (navigator.onLine) {
-                reddit();
-            } else {
-                offline();
-            }
-        }
-        if (setBG == 'Custom') {
-            customBG();
-        }
+            $('#image').fadeIn('slow');
+            $('#content').animate({
+                opacity: 1
+            }, 'fast');
+            $('.searchBox').focus();
 
-        $('#image').fadeIn('slow');
-        $('#content').animate({
-            opacity: 1
-        }, 'fast');
-        $('.searchBox').focus();
+            setEngineAdd = data[0].engine.address;
+            setEngPlace = data[0].engine.name;
+            $('#searchlist').val(setEngPlace);
+            $('.searchBox').attr('placeholder', 'Search ' + setEngPlace);
 
-        setEngineAdd = data.engine.address;
-        setEngPlace = data.engine.name;
-        $('#searchlist').val(setEngPlace);
-        $('.searchBox').attr('placeholder', 'Search ' + setEngPlace);
+            bkinfo = data.bookmarks;
 
-        bkinfo = data.bookmarks;
-
-        $(bkinfo).each(function (i) {
-            $('#bookmarks').append('<a href="' + bkinfo[i].address + '" class="bookmark ' + bkinfo[i].name + '"><div class="editbk"><img src="assets/edit.png"><div class="editmenu"><div class="editbtn">EDIT</div><div class="delbtn">DELETE</div></div></div> <div class="bkimg" style="background-image: url(' + bkinfo[i].img + ')"></div> <p class="name">' + bkinfo[i].name + '</p><div class="address">' + bkinfo[i].address + '</div></div>');
-            $('.bookmark').fadeIn('fast');
-        });
-        loadEdit();
+            $(bkinfo).each(function (i) {
+                $('#bookmarks').append('<a href="' + bkinfo[i].address + '" class="bookmark ' + bkinfo[i].name + '"><div class="editbk"><img src="assets/edit.png"><div class="editmenu"><div class="editbtn">EDIT</div><div class="delbtn">DELETE</div></div></div> <div class="bkimg" style="background-image: url(' + bkinfo[i].img + ')"></div> <p class="name">' + bkinfo[i].name + '</p><div class="address">' + bkinfo[i].address + '</div></div>');
+                $('.bookmark').fadeIn('fast');
+            });
+            loadEdit();
+        }
     });
+
 });
 
 function loadEdit() {
@@ -278,7 +318,7 @@ function unsplash() {
     var unsplashAPI = 'https://api.unsplash.com/photos/search/?query=nature&client_id=c7f3538249fa7a2878ba0b088bb6b2621265f5beb998daca109210d972d4a45c';
 
     if (typeof $.cookie('unsplashCookie') === 'undefined') {
-        $.cookie("unsplashCookie", 1,  {
+        $.cookie("unsplashCookie", 1, {
             expires: date
         });
         $.getJSON(unsplashAPI, {})
@@ -334,7 +374,7 @@ function reddit() {
     var redditAPI = 'https://www.reddit.com/r/earthporn/top.json?limit=10';
 
     if (typeof $.cookie('redditCookie') === 'undefined') {
-        $.cookie("redditCookie", 1,  {
+        $.cookie("redditCookie", 1, {
             expires: date
         });
         $.getJSON(redditAPI, {})
@@ -367,7 +407,7 @@ function reddit() {
                 $('#infocontainer').fadeIn();
             })
     } else {
-        chrome.storage.local.get('reddit', function (data) {   
+        chrome.storage.local.get('reddit', function (data) {
             imgarray = (data.reddit);
             //grab random image
             var image = imgarray[Math.floor(Math.random() * imgarray.length)];
