@@ -1,5 +1,7 @@
 # NewStart
 
+## DOWNLOAD IT HERE: 
+https://chrome.google.com/webstore/detail/bgmiobjbohnhhapcgclbgnlgjglikimj
 
 ![Screenshot of NewStart](https://github.com/cwilczewski/NewStart/blob/master/extras/cover.jpg)
 
