@@ -137,6 +137,21 @@ a {
     color: #fafafa;
     top: 20px;
     left: 20px;
+    display: flex;
+}
+
+#mText {
+    font-family: 'Assistant-Bold';
+    font-size: 2em;
+    letter-spacing: 5px;
+    margin-left: 10px;
+    position: relative;
+    top: -70px;
+    transition: top ease-in-out .3s;
+}
+
+.mouseover {
+    top: 0px !important;
 }
 
 #menu {
@@ -253,9 +268,9 @@ a {
 }
 
 #socialshare {
-    height: inherit;
-    display: block;
-    width: inherit;
+    height: inherit !important;
+    display: block !important;
+    width: inherit !important;
 }
 
 #share {
@@ -274,7 +289,6 @@ a {
 }
 
 .socialicon {
-    background-color: aliceblue;
     width: 70px;
     height: 70px;
     margin: 25px;

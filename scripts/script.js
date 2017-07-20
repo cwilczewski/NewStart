@@ -22,15 +22,12 @@ var localURL = window.location.href.slice(0, -10);
 var data;
 var bgData;
 
-
-
-
 //load user settings
 $(document).ready(function () {
 
     var timer = null;
     var linkDisable = null;
-    
+
     chrome.storage.local.get('firstRun', function (firstRun) {
         if (firstRun.firstRun === undefined) {
             $('#welcome').fadeIn().css('display', 'flex');
@@ -52,13 +49,11 @@ $(document).ready(function () {
             chrome.storage.local.set({
                 data: usrSettings
             }, function () {});
-        } 
-        else {
-        }
+        } else {}
     });
 
     chrome.storage.local.get('data', function (dataRaw) {
-        
+
         data = dataRaw.data;
 
         if (dataRaw.data === undefined) {
@@ -76,7 +71,7 @@ $(document).ready(function () {
             $('.searchBox').attr('placeholder', 'Search ' + setEngPlace);
 
         } else {
-            
+
             setBG = data[0].background.backgroundSource;
 
             $('#bglist').val(setBG);
@@ -118,7 +113,7 @@ $(document).ready(function () {
             $('#searchlist').val(setEngPlace);
             $('.searchBox').attr('placeholder', 'Search ' + setEngPlace);
 
-            bkinfo = data.bookmarks;
+            bkinfo = data[0].bookmarks;
 
             $(bkinfo).each(function (i) {
                 $('#bookmarks').append('<a href="' + bkinfo[i].address + '" class="bookmark ' + bkinfo[i].name + '"><div class="editbk"><img src="assets/edit.png"><div class="editmenu"><div class="editbtn">EDIT</div><div class="delbtn">DELETE</div></div></div> <div class="bkimg" style="background-image: url(' + bkinfo[i].img + ')"></div> <p class="name">' + bkinfo[i].name + '</p><div class="address">' + bkinfo[i].address + '</div></div>');
@@ -548,9 +543,9 @@ $('.choiceedit').each(function (i) {
 
 //saving/adding bookmark info
 $('#addbkmk').on('submit', function (e) {
+    bkinfo = [];
     e.preventDefault();
     if ($('.bookmark').length > 9) {
-        //        alert('Sorry, for now you can only ad 10 bookmarks!')
         alertrender.scLimit();
         $('#alert').fadeIn('fast').css('display', 'flex');
     } else {
@@ -592,7 +587,8 @@ $('#imginfo').click(function () {
 $('#menutoggle').click(function () {
     if ($('#maincontainer').hasClass('menuactive')) {
         $('#maincontainer').removeClass('menuactive');
-        $('#menutoggle').children().attr('class', 'fa fa-bars fa-3x');
+        $('#menutoggle').children('i').attr('class', 'fa fa-bars fa-3x');
+        $('#mText').text('MENU');
         $('#content').removeClass('contentScale');
         $('#main-wrapper').removeClass('wrapper-open');
         setTimeout(function () {
@@ -615,13 +611,30 @@ $('#menutoggle').click(function () {
             $('#menu').addClass('menuout');
         }, 50);
         $('#maincontainer').addClass('menuactive');
-        $('#menutoggle').children().attr('class', 'fa fa-times fa-3x');
+        $('#menutoggle').children('i').attr('class', 'fa fa-times fa-3x');
+        $('#mText').text('CLOSE');
         $('#content').addClass('contentScale');
         $('#maincontainer').css('transition', 'ease-in-out all .5s');
         $('#main-wrapper').css('transition', 'ease-in-out width .5s');
         $('#main-wrapper').addClass('wrapper-open');
 
     }
+});
+
+//if($('#menutoggle').children('i').attr('id', 'openicon')){
+//    $('#mText').text('MENU');
+//};
+//
+//if($('#menutoggle').children('i').attr('id', 'closeicon')){
+//    $('#mText').text('CLOSE');
+//};
+
+$('#openicon').hover(function() {
+    $('#mText').toggleClass('mouseover');
+});
+
+$('#closeicon').hover(function() {
+    $('#mText').toggleClass('mouseover');
 });
 
 $('.optionsheader').click(function () {
